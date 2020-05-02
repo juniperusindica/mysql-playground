@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+  playground-app:
+    container_name: playground-app
+    image: php:7.4-fpm
+    ports:
+      - 8000:8080
+    volumes:
+      - .apps/playground-app:/app
+
+  playground-db:
+    container_name: playground-db
+    image: mysql:8.0
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
+      MYSQL_DATABASE: playground-db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 'root'
+    ports:
+      - 3306:3306
+    volumes:
+      - playground-db:/var/lib/mysql
+
+  playground-mysqld-exporter:
+    container_name: playground-mysqld-exporter
+    image: prom/mysqld-exporter
+    ports:
+      - 9104:9104
+    environment:
+      DATA_SOURCE_NAME: "root:root@(playground-db:3306)/"
+
+  playground-prometheus:
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+    container_name: playground-prometheus
+    image: prom/prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - ./services/prometheus:/etc/prometheus/
+
+volumes:
+  playground-db:
+    driver: local
