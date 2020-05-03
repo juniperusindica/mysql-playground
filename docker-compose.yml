@@ -10,25 +10,33 @@ services:
       - .apps/playground-app:/app
 
   playground-db:
+    command: --default-authentication-plugin=mysql_native_password
     container_name: playground-db
-    image: mysql:8.0
+    image: mysql:5.7
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
       MYSQL_DATABASE: playground-db
       MYSQL_USER: root
-      MYSQL_PASSWORD: 'root'
+      MYSQL_PASSWORD: ''
     ports:
       - 3306:3306
     volumes:
       - playground-db:/var/lib/mysql
 
   playground-mysqld-exporter:
+    command: [
+      "--collect.global_status",
+      "--collect.engine_innodb_status",
+      "--collect.info_schema.clientstats",
+      "--collect.info_schema.innodb_metrics",
+      "--collect.global_variables"
+    ]
     container_name: playground-mysqld-exporter
     image: prom/mysqld-exporter
     ports:
       - 9104:9104
     environment:
-      DATA_SOURCE_NAME: "root:root@(playground-db:3306)/"
+      DATA_SOURCE_NAME: "root@(playground-db:3306)/"
 
   playground-prometheus:
     command:
@@ -39,6 +47,12 @@ services:
       - 9090:9090
     volumes:
       - ./services/prometheus:/etc/prometheus/
+
+  playground-grafana:
+    container_name: playground-grafana
+    image: grafana/grafana:6.7.3
+    ports:
+      - 3000:3000
 
 volumes:
   playground-db:
