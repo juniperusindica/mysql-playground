@@ -5,3 +5,4 @@ http://localhost:3000/
 https://github.com/prometheus/mysqld_exporter
 https://hub.docker.com/r/prom/mysqld-exporter
 https://hub.docker.com/r/prom/prometheus/
+https://github.com/percona/grafana-dashboards/tree/master/dashboards
