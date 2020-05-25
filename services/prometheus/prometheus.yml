@@ -5,4 +5,6 @@ scrape_configs:
   - job_name: 'playground-db'
     static_configs:
       - targets:
-          - playground-mysqld-exporter:9104
+          - playground-mysqld-exporter:9104 # mysqld_exporter
+      - targets:
+          - playground-db:9100 # node_exporter

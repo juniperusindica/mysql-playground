@@ -1,20 +1,29 @@
 version: '3'
 
 services:
-  playground-app:
-    container_name: playground-app
-    command: ["sleep", "30000"]
-    build: ./services/app
+
+  playground-anemometer:
+    command: ["php", "-S", "0.0.0.0:80"]
+    container_name: playground-anemometer
+    image: boxinc/anemometer
+    volumes:
+      - ./services/anemometer/config/anemometer:/var/www/html/conf
+      - playground-db:/var/lib/mysql
     ports:
-      - 8000:8080
+      - 80:80
+
+  playground-app:
+    build: ./services/app
+    command: ["cron", "-f"]
+    container_name: playground-app
     volumes:
       - ./services/app:/app
-    working_dir: /app
+      - ./services/app/config/cron:/etc/cron.d #todo
 
   playground-db:
+    build: ./services/mysql
     command: --default-authentication-plugin=mysql_native_password
     container_name: playground-db
-    image: mysql:8.0
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
       MYSQL_DATABASE: playground-db
@@ -22,16 +31,31 @@ services:
       MYSQL_PASSWORD: ''
     ports:
       - 3306:3306
+      - 9100:9100
     volumes:
+      - ./services/mysql/dump:/docker-entrypoint-initdb.d
+      - ./services/mysql/config/supervisor:/etc/supervisor/conf.d
+      - ./services/mysql/config/mysql:/etc/mysql/conf.d
       - playground-db:/var/lib/mysql
+
+  playground-grafana:
+    container_name: playground-grafana
+    image: grafana/grafana:6.7.3
+    ports:
+      - 3000:3000
+    volumes:
+      - ./services/grafana/provisioning/dashboards:/var/lib/grafana/dashboards
+      - ./services/grafana/config:/etc/grafana/provisioning
 
   playground-mysqld-exporter:
     command: [
-      "--collect.global_status",
       "--collect.engine_innodb_status",
       "--collect.info_schema.clientstats",
       "--collect.info_schema.innodb_metrics",
-      "--collect.global_variables"
+      "--collect.info_schema.innodb_tablespaces",
+      "--collect.perf_schema.file_events",
+      "--collect.info_schema.innodb_cmp",
+      "--collect.info_schema.processlist",
     ]
     container_name: playground-mysqld-exporter
     image: prom/mysqld-exporter
@@ -50,11 +74,23 @@ services:
     volumes:
       - ./services/prometheus:/etc/prometheus/
 
-  playground-grafana:
-    container_name: playground-grafana
-    image: grafana/grafana:6.7.3
-    ports:
-      - 3000:3000
+  playground-slow-log-cron:
+    build: ./services/slow-log-cron
+    command: ["cron", "-f"]
+    container_name: playground-slow-log-cron
+    volumes:
+      - ./services/slow-log-cron/commands:/commands
+      - ./services/slow-log-cron/config/logrotate:/etc/logrotate.d
+      - playground-db:/var/lib/mysql
+
+  playground-sysbench:
+    build: services/sysbench
+    command: ["cron", "-f"]
+    container_name: playground-sysbench
+    volumes:
+      - ./services/sysbench/config/cron:/etc/cron.d
+      - ./services/sysbench/tests:/usr/share/sysbench
+
 
 volumes:
   playground-db:
