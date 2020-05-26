@@ -84,12 +84,11 @@ services:
 
   playground-sysbench:
     build: services/sysbench
-    command: ["cron", "-f"]
+    tty: true
     container_name: playground-sysbench
     volumes:
-      - ./services/sysbench/config/cron:/etc/cron.d
+      - ./services/sysbench/commands:/commands
       - ./services/sysbench/tests:/usr/share/sysbench
-
 
 volumes:
   playground-db:
