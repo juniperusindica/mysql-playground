@@ -2,6 +2,9 @@ FROM php:7.4-cli
 
 RUN docker-php-ext-install pdo_mysql
 
-COPY . /app
+RUN apt update
 
-WORKDIR /app
+RUN apt install -y cron nano
+
+COPY ./config/cron/crontab /etc/cron.d/crontab
+RUN crontab /etc/cron.d/crontab

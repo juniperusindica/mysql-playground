@@ -12,4 +12,4 @@ reload:
 	docker-compose stop && docker-compose up -d
 
 prepare-db:
-	docker exec -it playground-app php /app/commands/prepare-db.php
+	docker exec -it playground-app php /app/commands/prepare.php

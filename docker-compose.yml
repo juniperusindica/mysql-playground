@@ -17,8 +17,7 @@ services:
     command: ["cron", "-f"]
     container_name: playground-app
     volumes:
-      - ./services/app:/app
-      - ./services/app/config/cron:/etc/cron.d #todo
+      - ./services/app/commands:/commands
 
   playground-db:
     build: ./services/mysql
@@ -72,7 +71,7 @@ services:
     ports:
       - 9090:9090
     volumes:
-      - ./services/prometheus:/etc/prometheus/
+      - ./services/prometheus/config:/etc/prometheus/
 
   playground-slow-log-cron:
     build: ./services/slow-log-cron

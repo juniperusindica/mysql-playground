@@ -16,18 +16,35 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `test_table`
+-- Table structure for table `test_table_big`
 --
 
-DROP TABLE IF EXISTS `test_table`;
+DROP TABLE IF EXISTS `test_table_big`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
-CREATE TABLE `test_table` (
+CREATE TABLE `test_table_big` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `data1` tinyint DEFAULT NULL,
-  `data2` varchar(500) DEFAULT NULL,
+  `number` tinyint DEFAULT NULL,
+  `string_short` varchar(5) DEFAULT NULL,
+  `string_long` varchar(500) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4000001 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `test_table_small`
+--
+
+DROP TABLE IF EXISTS `test_table_small`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `test_table_small` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `number` tinyint DEFAULT NULL,
+  `string_short` varchar(5) DEFAULT NULL,
+  `string_long` varchar(500) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=120001 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -39,4 +56,4 @@ CREATE TABLE `test_table` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-05-24 17:21:27
+-- Dump completed on 2020-05-26  8:55:21
