@@ -34,7 +34,7 @@
     "editable": true,
     "gnetId": null,
     "graphTooltip": 1,
-    "iteration": 1590350476298,
+    "iteration": 1590742225834,
     "links": [
         {
             "icon": "dashboard",
@@ -4600,10 +4600,8 @@
             {
                 "allValue": null,
                 "current": {
-                    "$$hashKey": "object:193",
-                    "selected": true,
-                    "text": "playground-db:9100",
-                    "value": "playground-db:9100"
+                    "text": "playground-node-exporter:9100",
+                    "value": "playground-node-exporter:9100"
                 },
                 "datasource": "Prometheus",
                 "definition": "label_values(node_load1, instance)",
@@ -4615,10 +4613,10 @@
                 "name": "host_node_exporter_db",
                 "options": [
                     {
-                        "$$hashKey": "object:193",
+                        "$$hashKey": "object:535",
                         "selected": true,
-                        "text": "playground-db:9100",
-                        "value": "playground-db:9100"
+                        "text": "playground-node-exporter:9100",
+                        "value": "playground-node-exporter:9100"
                     }
                 ],
                 "query": "label_values(node_load1, instance)",
@@ -4676,5 +4674,5 @@
     "variables": {
         "list": []
     },
-    "version": 14
+    "version": 1
 }

@@ -7,4 +7,4 @@ scrape_configs:
       - targets:
           - playground-mysqld-exporter:9104 # mysqld_exporter
       - targets:
-          - playground-db:9100 # node_exporter
+          - playground-node-exporter:9100 # node_exporter
