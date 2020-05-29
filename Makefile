@@ -1,6 +1,5 @@
 up:
 	docker-compose up -d
-	docker exec -it playground-db service supervisor start
 
 status:
 	docker-compose ps
