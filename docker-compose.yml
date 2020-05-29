@@ -63,20 +63,20 @@ services:
       DATA_SOURCE_NAME: "root@(playground-db:3306)/"
 
   playground-node-exporter:
-    container_name: playground-node-exporter
-    image: prom/node-exporter
-    volumes:
-      - /proc:/host/proc:ro
-      - /sys:/host/sys:ro
-      - /:/rootfs:ro
     command: [
       "--path.procfs=/host/proc",
       "--path.rootfs=/rootfs",
       "--path.sysfs=/host/sys",
       "--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)",
     ]
+    container_name: playground-node-exporter
+    image: prom/node-exporter
     ports:
       - 9100:9100
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
 
   playground-prometheus:
     command:
@@ -99,8 +99,8 @@ services:
 
   playground-sysbench:
     build: services/sysbench
-    tty: true
     container_name: playground-sysbench
+    tty: true
     volumes:
       - ./services/sysbench/commands:/commands
       - ./services/sysbench/tests:/usr/share/sysbench
